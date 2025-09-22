@@ -3,14 +3,14 @@ import Text from "./text";
 import { type VariantProps, tv } from "tailwind-variants";
 
 export const inputTextContainerVariants = tv({
-  base: "flex flex-col gap-1",
+  base: `flex flex-col gap-1`,
 });
 
 export const inputTextWrapperVariants = tv({
   base: `
-    border border-solid border-border-primary 
+    border border-solid border-border-primary
     focus:border-border-active bg-transparent
-    rounded flex items-center gap-3
+    rounded flex items-center gap-3 
   `,
   variants: {
     size: {
@@ -19,10 +19,14 @@ export const inputTextWrapperVariants = tv({
     disabled: {
       true: "pointer-events-none",
     },
+    hasError: {
+      true: "border-border-error",
+    },
   },
   defaultVariants: {
     disabled: false,
     size: "md",
+    hasError: false,
   },
 });
 
@@ -30,7 +34,7 @@ export const inputTextVariants = tv({
   base: `
     bg-transparent outline-none placeholder:text-placeholder
     text-accent-paragraph flex-1
-  `,
+    `,
 });
 
 export const inputTextIconVariants = tv({
@@ -62,11 +66,21 @@ export default function InputText({
 }: InputTextProps) {
   return (
     <div className={inputTextContainerVariants({ className })}>
-      <div className={inputTextWrapperVariants({ size, disabled })}>
+      <div
+        className={inputTextWrapperVariants({
+          size,
+          disabled,
+          hasError: !!error,
+        })}
+      >
         {icon && (
           <Icon svg={icon} className={inputTextIconVariants({ size })} />
         )}
-        <input className={inputTextVariants()} disabled={disabled} {...props} />
+        <input
+          className={inputTextVariants()}
+          disabled={disabled as boolean}
+          {...props}
+        />
       </div>
       {error && (
         <Text variant="label-small" className="text-accent-red">
