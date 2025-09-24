@@ -1,3 +1,4 @@
+import { useForm } from "react-hook-form";
 import ChevronLeftIcon from "./assets/icons/chevron-left.svg?react";
 import ChevronRightIcon from "./assets/icons/chevron-right.svg?react";
 import SearchIcon from "./assets/icons/search.svg?react";
@@ -7,9 +8,12 @@ import Button from "./components/button";
 import ButtonIcon from "./components/button-icon";
 import Divider from "./components/divider";
 import InputCheckbox from "./components/input-checkbox";
+import InputSingleFile from "./components/input-single-file";
 import InputText from "./components/input-text";
 
 export default function App() {
+  const form = useForm();
+
   return (
     <div className="grid gap-7 p-6">
       <div className="flex gap-3">
@@ -62,6 +66,19 @@ export default function App() {
 
       <div>
         <InputCheckbox />
+      </div>
+
+      <div>
+        <Divider />
+      </div>
+
+      <div>
+        <InputSingleFile
+          form={form}
+          allowedExtensions={["png", "jpg", "jpeg", "webp"]}
+          maxFileSileInMB={50}
+          {...form.register("file")}
+        />
       </div>
     </div>
   );
