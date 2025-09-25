@@ -6,6 +6,15 @@ import Alert from "./components/alert";
 import Badge from "./components/badge";
 import Button from "./components/button";
 import ButtonIcon from "./components/button-icon";
+import {
+  Dialog,
+  DialogBody,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTrigger,
+} from "./components/dialog";
 import Divider from "./components/divider";
 import ImageFilePreview from "./components/image-file-preview";
 import InputCheckbox from "./components/input-checkbox";
@@ -83,6 +92,33 @@ export default function App() {
           replaceBy={<ImageFilePreview src={fileSource} alt="Imagem" />}
           {...form.register("file")}
         />
+      </div>
+
+      <div>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>Abrir modal</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>Teste dialog</DialogHeader>
+            <DialogBody>
+              <InputSingleFile
+                form={form}
+                allowedExtensions={["png", "jpg", "jpeg", "webp"]}
+                maxFileSileInMB={50}
+                replaceBy={<ImageFilePreview src={fileSource} alt="Imagem" />}
+                {...form.register("file")}
+              />
+            </DialogBody>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="secondary">Cancelar</Button>
+              </DialogClose>
+
+              <Button variant="primary">Adicionar</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
