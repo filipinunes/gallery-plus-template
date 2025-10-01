@@ -1,4 +1,5 @@
 import Container from "../components/container";
+import AlbumsFilter from "../contexts/albums/components/albums-filter";
 import { PhotosList } from "../contexts/photos/components/photos-list";
 import type { Photo } from "../contexts/photos/models/photo";
 
@@ -48,6 +49,7 @@ const photos: Photo[] = [
 export default function PageHome() {
   return (
     <Container>
+      <AlbumsFilter albums={photos[0].albums} className="mb-9" />
       <PhotosList photos={photos} />
     </Container>
   );
