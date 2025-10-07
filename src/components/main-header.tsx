@@ -1,6 +1,7 @@
 import cx from "classnames";
 import { Link } from "react-router";
 import Logo from "../assets/images/galeria-plus-full-logo.svg?react";
+import AlbumNewDialog from "../contexts/albums/components/album-new-dialog";
 import PhotoNewDialog from "../contexts/photos/components/photo-new-dialog";
 import Button from "./button";
 import Container from "./container";
@@ -26,7 +27,9 @@ export default function MainHeader({ className, ...props }: MainHeaderProps) {
 
       <div className="flex items-center gap-3">
         <PhotoNewDialog trigger={<Button>Nova foto</Button>} />
-        <Button variant="secondary">Criar albúm</Button>
+        <AlbumNewDialog
+          trigger={<Button variant="secondary">Criar albúm</Button>}
+        />
       </div>
     </Container>
   );
