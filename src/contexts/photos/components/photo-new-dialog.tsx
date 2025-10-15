@@ -13,22 +13,16 @@ import {
 import ImagePreview from "../../../components/image-preview";
 import InputSingleFile from "../../../components/input-single-file";
 import InputText from "../../../components/input-text";
-import Text from "../../../components/text";
-import type { Album } from "../../albums/models/album";
 import Skeleton from "../../../components/skeleton";
+import Text from "../../../components/text";
+import useAlbums from "../../albums/hooks/use-albums";
 
 interface PhotoNewDialogProps {
   trigger: React.ReactNode;
 }
 
 export default function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
-  // TODO: apenas para mock, será removido assim que a API foi integrada
-  const isLoadingAlbum = false;
-  const albums: Album[] = [
-    { id: "1", title: "Albúm 1" },
-    { id: "2", title: "Albúm 2" },
-    { id: "3", title: "Albúm 3" },
-  ];
+  const { albums, isLoadingAlbums } = useAlbums();
   const form = useForm();
   const file = form.watch("file");
   const fileSource = file?.[0] ? URL.createObjectURL(file[0]) : undefined;
@@ -66,7 +60,7 @@ export default function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
             <Text variant="label-small">Selecionar álbums</Text>
 
             <div className="flex flex-wrap gap-3">
-              {!isLoadingAlbum &&
+              {!isLoadingAlbums &&
                 albums.length > 0 &&
                 albums.map((album) => (
                   <Button
@@ -79,7 +73,7 @@ export default function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
                   </Button>
                 ))}
 
-              {isLoadingAlbum &&
+              {isLoadingAlbums &&
                 Array.from({ length: 5 }).map((_, index) => (
                   <Skeleton
                     key={`album-loading-${index}`}
@@ -88,7 +82,7 @@ export default function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
                 ))}
             </div>
 
-            {!isLoadingAlbum && albums.length === 0 && (
+            {!isLoadingAlbums && albums.length === 0 && (
               <Text>Nenhum álbum encontrado</Text>
             )}
           </div>
