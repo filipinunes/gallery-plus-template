@@ -13,56 +13,14 @@ import InputText from "../../../components/input-text";
 import Skeleton from "../../../components/skeleton";
 import Text from "../../../components/text";
 import PhotoImageSelectable from "../../photos/components/photo-image-selectable";
-import type { Photo } from "../../photos/models/photo";
+import usePhotos from "../../photos/hooks/use-photos";
 
 interface AlbumNewDialogProps {
   trigger: React.ReactNode;
 }
 
 export default function AlbumNewDialog({ trigger }: AlbumNewDialogProps) {
-  const isLoadingPhotos = false;
-  const photos: Photo[] = [
-    {
-      id: "1",
-      title: "teste",
-      albums: [
-        { id: "1", title: "Albúm 1" },
-        { id: "2", title: "Albúm 2" },
-        { id: "3", title: "Albúm 3" },
-      ],
-      imageId: "portrait-tower.png",
-    },
-    {
-      id: "2",
-      title: "teste",
-      albums: [
-        { id: "1", title: "Albúm 1" },
-        { id: "2", title: "Albúm 2" },
-        { id: "3", title: "Albúm 3" },
-      ],
-      imageId: "portrait-tower.png",
-    },
-    {
-      id: "3",
-      title: "teste",
-      albums: [
-        { id: "1", title: "Albúm 1" },
-        { id: "2", title: "Albúm 2" },
-        { id: "3", title: "Albúm 3" },
-      ],
-      imageId: "portrait-tower.png",
-    },
-    {
-      id: "4",
-      title: "teste",
-      albums: [
-        { id: "1", title: "Albúm 1" },
-        { id: "2", title: "Albúm 2" },
-        { id: "3", title: "Albúm 3" },
-      ],
-      imageId: "portrait-tower.png",
-    },
-  ];
+  const { photos, isLoadingPhotos } = usePhotos();
 
   function handleTogglePhoto(selected: boolean, photoId: string) {
     console.log(`photo: ${photoId} - selected: ${selected} `);
@@ -99,7 +57,7 @@ export default function AlbumNewDialog({ trigger }: AlbumNewDialogProps) {
                   <PhotoImageSelectable
                     key={photo.id}
                     imageClassName="h-20 w-20"
-                    src={`images/${photo.imageId}`}
+                    src={`${import.meta.env.VITE_IMAGES_URL}/${photo.imageId}`}
                     title={photo.title}
                     onSelectImage={(selected) =>
                       handleTogglePhoto(selected, photo.id)
