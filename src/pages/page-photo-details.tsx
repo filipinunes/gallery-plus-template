@@ -33,7 +33,11 @@ export default function PagePhotoDetails() {
           <Skeleton className="w-48 h-8" />
         )}
 
-        <PhotoNavigator />
+        <PhotoNavigator
+          nextPhotoId={photo?.nextPhotoId}
+          previousPhotoId={photo?.previousPhotoId}
+          loading={isLoadingPhoto}
+        />
       </header>
 
       <div className="grid grid-cols-[21rem_1fr] gap-24">
