@@ -1,3 +1,5 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import React from "react";
 import { useForm } from "react-hook-form";
 import Alert from "../../../components/alert";
 import Button from "../../../components/button";
@@ -17,13 +19,13 @@ import Skeleton from "../../../components/skeleton";
 import Text from "../../../components/text";
 import useAlbums from "../../albums/hooks/use-albums";
 import { photoNewFormSchema, type PhotoNewFormSchema } from "../schemas";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 interface PhotoNewDialogProps {
   trigger: React.ReactNode;
 }
 
 export default function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
+  const [modalOpen, setModalOpen] = React.useState(false);
   const { albums, isLoadingAlbums } = useAlbums();
   const form = useForm<PhotoNewFormSchema>({
     resolver: zodResolver(photoNewFormSchema),
@@ -35,8 +37,12 @@ export default function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
     console.log(payload);
   }
 
+  React.useEffect(() => {
+    if (!modalOpen) form.reset();
+  }, [modalOpen, form]);
+
   return (
-    <Dialog>
+    <Dialog open={modalOpen} onOpenChange={setModalOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
