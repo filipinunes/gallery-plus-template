@@ -17,6 +17,7 @@ import Skeleton from "../../../components/skeleton";
 import Text from "../../../components/text";
 import PhotoImageSelectable from "../../photos/components/photo-image-selectable";
 import usePhotos from "../../photos/hooks/use-photos";
+import useAlbum from "../hooks/use-album";
 import { albumNewFormSchema, type AlbumNewFormSchema } from "../schema";
 
 interface AlbumNewDialogProps {
@@ -28,8 +29,9 @@ export default function AlbumNewDialog({ trigger }: AlbumNewDialogProps) {
   const form = useForm<AlbumNewFormSchema>({
     resolver: zodResolver(albumNewFormSchema),
   });
-
   const { photos, isLoadingPhotos } = usePhotos();
+  const { createAlbum } = useAlbum();
+  const [isCreatingAlbum, setIsCreatingAlbum] = React.useTransition();
 
   function handleTogglePhoto(selected: boolean, photoId: string) {
     const photosIds = form.getValues("photosIds") || [];
@@ -45,7 +47,11 @@ export default function AlbumNewDialog({ trigger }: AlbumNewDialogProps) {
   }
 
   function handleSubmit(payload: AlbumNewFormSchema) {
-    console.log(payload);
+    setIsCreatingAlbum(async () => {
+      await createAlbum(payload);
+
+      setModalOpen(false);
+    });
   }
 
   React.useEffect(() => {
@@ -115,10 +121,18 @@ export default function AlbumNewDialog({ trigger }: AlbumNewDialogProps) {
 
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="secondary">Cancelar</Button>
+              <Button disabled={isCreatingAlbum} variant="secondary">
+                Cancelar
+              </Button>
             </DialogClose>
 
-            <Button type="submit">Criar</Button>
+            <Button
+              disabled={isCreatingAlbum}
+              handling={isCreatingAlbum}
+              type="submit"
+            >
+              Criar
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
