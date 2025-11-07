@@ -4,10 +4,12 @@ import { api } from "../../../helpers/api";
 import usePhotos from "../../photos/hooks/use-photos";
 import type { Album } from "../models/album";
 import type { AlbumNewFormSchema } from "../schema";
+import usePhotoAlbums from "../../photos/hooks/use-photo-albums";
 
 export default function useAlbum() {
   const queryClient = useQueryClient();
   const { photos } = usePhotos();
+  const { managePhotoOnAlbum } = usePhotoAlbums();
 
   async function createAlbum(payload: AlbumNewFormSchema) {
     try {
@@ -23,9 +25,7 @@ export default function useAlbum() {
                 .find((photo) => photo.id === photoId)
                 ?.albums?.map((album) => album.id) || [];
 
-            api.put(`/photos/${photoId}/albums`, {
-              albumsIds: [...photoAlbumsIds, album.id],
-            });
+            managePhotoOnAlbum(photoId, [...photoAlbumsIds, album.id]);
           })
         );
       }
